@@ -4,7 +4,7 @@ connection = sqlite3.connect("not_telegram.db")
 cursor = connection.cursor()
 cursor.execute("""
      CREATE TABLE "Users" (
-         "id"	INTEGER UNIQUE,
+         "id"	PRIMARY_KEY,
          "username"	TEXT NOT NULL,
          "email"	TEXT NOT NULL,
          "age"	INTEGER,
