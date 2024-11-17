@@ -4,12 +4,13 @@ connection = sqlite3.connect("not_telegram.db")
 cursor = connection.cursor()
 cursor.execute("""
      CREATE TABLE "Users" (
-         "id"	PRIMARY_KEY,
+         "id" INTEGER UNIQUE, 
          "username"	TEXT NOT NULL,
          "email"	TEXT NOT NULL,
          "age"	INTEGER,
-         "balance"	INTEGER
-     )
+         "balance"	INTEGER,
+         PRIMARY KEY("id")
+     );
  """)
 connection.commit()
 
