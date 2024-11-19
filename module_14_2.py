@@ -28,10 +28,10 @@ for num in range(1, 11, 3):
      cursor.execute('DELETE FROM Users WHERE username=?', ("User"+str(num),) )
      connection.commit()
 
-# cursor.execute('SELECT * FROM "Users" WHERE "age" <> 60')
-# users = cursor.fetchall()
-# for user in users:
-#     print(f"Имя: {user[1]} | Почта: {user[2]} | Возраст: {user[3]} | Баланс: {user[4]}")
+cursor.execute('SELECT * FROM "Users" WHERE "age" <> 60')
+users = cursor.fetchall()
+for user in users:
+     print(f"Имя: {user[1]} | Почта: {user[2]} | Возраст: {user[3]} | Баланс: {user[4]}")
 
 """Удаление пользрвателя с id=6"""
 cursor.execute('DELETE FROM Users WHERE id=6')
@@ -40,9 +40,15 @@ connection.commit()
 """Подсчёт числа пользователей"""
 cursor.execute('SELECT COUNT(*) FROM Users')
 connection.commit()
+total_users = cursor.fetchone()[0]
+print("Число пользователей", total_users)
 
+"""Подсчёт суммы всех балансов"""
+cursor.execute('SELECT SUM(balance) FROM Users')
+all_balances = cursor.fetchone()[0]
+connection.commit()
 
-#print(all_balances / total_users)
+print(all_balances / total_users)
 
 connection.close()
 
