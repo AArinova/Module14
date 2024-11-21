@@ -44,6 +44,9 @@ async def get_buying_list(message):
         await message.answer(f'Название: Product{i_product} | Описание: Это номер {i_product} | Цена: {i_product * 100}')
     await message.answer("Выберите продукт для покупки:", reply_markup=ib_buy)
 
+@dp.callback_query_handler(text="product_buying")
+async def send_confirm_message(call):
+    await call.message.answer("Вы успешно приобрели продукт!")
 
 @dp.message_handler(text=['Рассчитать'])
 async def main_menu(message):
@@ -60,8 +63,6 @@ async def main_menu(message):
 async def get_formulas(call):
     await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:", reply_markup=ib)
 
-
-#Создайте Inline меню из 4 кнопок с надписями . У всех кнопок назначьте callback_data="product_buying"
 
 @dp.callback_query_handler(text='calories')
 async def set_age(message):
