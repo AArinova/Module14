@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-api = "7245377370:AAHM2WCQKtOFuRQzZyuV2MakYowLQgObyyA"
+api = ""
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
@@ -41,12 +41,16 @@ class UserState(StatesGroup):
 @dp.message_handler(text=['Купить'])
 async def get_buying_list(message):
     for i_product in range(1, 5):
+        file_name = "photo/product" + str(i_product) + ".png"
+        with open(file_name, "rb") as img:
+            await message.answer_photo(img)
         await message.answer(f'Название: Product{i_product} | Описание: Это номер {i_product} | Цена: {i_product * 100}')
     await message.answer("Выберите продукт для покупки:", reply_markup=ib_buy)
 
 @dp.callback_query_handler(text="product_buying")
 async def send_confirm_message(call):
     await call.message.answer("Вы успешно приобрели продукт!")
+    await call.answer()
 
 @dp.message_handler(text=['Рассчитать'])
 async def main_menu(message):
@@ -55,13 +59,12 @@ async def main_menu(message):
 
 @dp.message_handler(text=['Информация'])
 async def main_menu(message):
-    await (message.answer("Не знаю о чём Вас проинформировать.", reply_markup=ib))
-           #("Тут покупают нашу божественную продукцию.", reply_markup=ib))
+    await message.answer("Тут покупают нашу божественную продукцию.")
 
 
 @dp.callback_query_handler(text="formulas")
 async def get_formulas(call):
-    await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:", reply_markup=ib)
+    await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:") #, reply_markup=ib)
 
 
 @dp.callback_query_handler(text='calories')
