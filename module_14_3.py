@@ -5,6 +5,7 @@ from babel.plural import skip_token
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import crud_functions
 
 api = ""
 bot = Bot(token=api)
@@ -40,11 +41,12 @@ class UserState(StatesGroup):
 
 @dp.message_handler(text=['Купить'])
 async def get_buying_list(message):
-    for i_product in range(1, 5):
-        file_name = "photo/product" + str(i_product) + ".png"
+    products = crud_functions.get_all_products()
+    for i_product in products:
+        file_name = "photo/product" + str(i_product[0]) + ".png"
         with open(file_name, "rb") as img:
             await message.answer_photo(img)
-        await message.answer(f'Название: Product{i_product} | Описание: Это номер {i_product} | Цена: {i_product * 100}')
+        await message.answer(f'Название: {i_product[1]} | Описание: Это {i_product[2]} | Цена: {i_product[3]}')
     await message.answer("Выберите продукт для покупки:", reply_markup=ib_buy)
 
 @dp.callback_query_handler(text="product_buying")
@@ -64,7 +66,7 @@ async def main_menu(message):
 
 @dp.callback_query_handler(text="formulas")
 async def get_formulas(call):
-    await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:") #, reply_markup=ib)
+    await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:")
 
 
 @dp.callback_query_handler(text='calories')
