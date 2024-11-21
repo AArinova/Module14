@@ -24,10 +24,25 @@ button2 = InlineKeyboardButton(text="Формулы расчёта", callback_da
 ib.add(button1, button2)
 
 
+"""buy keyboard3"""
+ib_buy = InlineKeyboardMarkup()
+btn1 = InlineKeyboardButton(text="Product1", callback_data='product_buying')
+btn2 = InlineKeyboardButton(text="Product2", callback_data="product_buying")
+btn3 = InlineKeyboardButton(text="Product3", callback_data="product_buying")
+btn4 = InlineKeyboardButton(text="Product4", callback_data="product_buying")
+ib_buy.add(btn1, btn2, btn3, btn4)
+
+
 class UserState(StatesGroup):
     age = State()
     growth = State()
     weight = State()
+
+@dp.message_handler(text=['Купить'])
+async def get_buying_list(message):
+    for i_product in range(1, 5):
+        await message.answer(f'Название: Product{i_product} | Описание: Это номер {i_product} | Цена: {i_product * 100}')
+    await message.answer("Выберите продукт для покупки:", reply_markup=ib_buy)
 
 
 @dp.message_handler(text=['Рассчитать'])
@@ -46,7 +61,7 @@ async def get_formulas(call):
     await call.message.answer("10*ВЕС+6.25*РОСТ-5*ВОЗРАСТ-161:", reply_markup=ib)
 
 
-#Создайте Inline меню из 4 кнопок с надписями "Product1", "Product2", "Product3", "Product4". У всех кнопок назначьте callback_data="product_buying"
+#Создайте Inline меню из 4 кнопок с надписями . У всех кнопок назначьте callback_data="product_buying"
 
 @dp.callback_query_handler(text='calories')
 async def set_age(message):
