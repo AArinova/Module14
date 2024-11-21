@@ -25,7 +25,7 @@ ib.add(button1, button2)
 
 
 """buy keyboard3"""
-ib_buy = InlineKeyboardMarkup()
+ib_buy = InlineKeyboardMarkup(row_width=4)
 btn1 = InlineKeyboardButton(text="Product1", callback_data='product_buying')
 btn2 = InlineKeyboardButton(text="Product2", callback_data="product_buying")
 btn3 = InlineKeyboardButton(text="Product3", callback_data="product_buying")
