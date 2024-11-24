@@ -27,27 +27,20 @@ def get_all_products():
 def add_user(username, email, age):
      connection = sqlite3.connect("crud.db")
      cursor = connection.cursor()
-     cursor.execute('INSERT INTO "Users" ("username", "email", "age", "balance") VALUES ("' + username + '","' + email + '", "' + age + '", 1000)')
+     cursor.execute('INSERT INTO "Users" ("username", "email", "age", "balance") VALUES ("' + username + '","' + email + '","' + age + '", 1000)')
      connection.commit()
      connection.close()
 
 def is_included(username):
      connection = sqlite3.connect("crud.db")
      cursor = connection.cursor()
-     cursor.execute('SELECT * FROM Users')
+     cursor.execute('SELECT "id" FROM Users WHERE "username"="'+username+'"')
+     connection.commit()
      users_list = cursor.fetchall()
      connection.close()
-     print(users_list)
-     is_included_flag = False
-     for user in users_list:
-          if username == user[1]:
-               is_included_flag = True
-               break
-     return is_included_flag
+     if len(users_list) == 0:
+          return False
+     else:
+          return True
 
-
-
-     #принимает имя пользователя и возвращает True,
-# если такой пользователь есть в таблице Users, в противном случае False.
-# Для получения записей используйте SQL запрос.
 
