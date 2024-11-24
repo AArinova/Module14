@@ -14,7 +14,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 """keyboard1"""
 kb = ReplyKeyboardMarkup(resize_keyboard=True)
 button = KeyboardButton(text="Рассчитать")
-button_info = KeyboardButton(text="Информация")
+button_info = KeyboardButton(text="Инфо")
 button_buy = KeyboardButton(text="Купить")
 button_reg = KeyboardButton(text="Регистрация")
 kb.row(button, button_info, button_buy, button_reg)
@@ -34,6 +34,12 @@ btn3 = InlineKeyboardButton(text="Product3", callback_data="product_buying")
 btn4 = InlineKeyboardButton(text="Product4", callback_data="product_buying")
 ib_buy.add(btn1, btn2, btn3, btn4)
 
+
+class RegistrationState(StatesGroup):
+    username = State()
+    email = State()
+    age = State()
+    balance = State() #(по умолчанию 1000).
 
 class UserState(StatesGroup):
     age = State()
@@ -60,7 +66,7 @@ async def main_menu(message):
     await message.answer("Выберите опцию:", reply_markup=ib)
 
 
-@dp.message_handler(text=['Информация'])
+@dp.message_handler(text=['Инфо'])
 async def main_menu(message):
     await message.answer("Тут покупают нашу божественную продукцию.")
 
