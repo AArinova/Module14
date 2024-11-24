@@ -39,7 +39,6 @@ class RegistrationState(StatesGroup):
     username = State()
     email = State()
     age = State()
-    balance = State() #(по умолчанию 1000).
 
 class UserState(StatesGroup):
     age = State()
@@ -54,12 +53,29 @@ async def sing_up(message):
 @dp.message_handler(state=RegistrationState.username)
 async def set_username(message, state):
     await state.update_data(username=message.text)
-    print("Name ", message.text)
     if crud_functions.is_included(message.text)==True:
         await message.answer("Пользователь существует, введите другое имя:")
+        await RegistrationState.username.set()
     else:
         await message.answer("Введите свой email:")
         await RegistrationState.email.set()
+
+@dp.message_handler(state=RegistrationState.email)
+async def set_email(message, state):
+    await state.update_data(username=message.text)
+    await RegistrationState.email.set()
+
+    await message.answer("Введите свой возраст:")
+    await RegistrationState.age.set()
+
+@dp.message_handler(state=RegistrationState.age)
+async def set_age(message, state):
+    await state.update_data(username=message.text)
+    await RegistrationState.age.set()
+    data = await state.get_data()
+    print(data)
+    crud_functions.add_user(data["username"], data["email"], data["age"])
+
 
 @dp.message_handler(text=['Купить'])
 async def get_buying_list(message):
