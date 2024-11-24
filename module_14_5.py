@@ -7,7 +7,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import crud_functions
 
-api = "7245377370:AAHM2WCQKtOFuRQzZyuV2MakYowLQgObyyA"
+api = ""
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
@@ -45,6 +45,20 @@ class UserState(StatesGroup):
     age = State()
     growth = State()
     weight = State()
+
+@dp.message_handler(text=['Регистрация'])
+async def sing_up(message):
+    await message.answer("Введите имя пользователя (только латинский алфавит):")
+    await RegistrationState.username.set()
+
+@dp.message_handler(state=RegistrationState.username) #(state=UserState.age)
+async def set_username(message, state):
+    await state.update_data(username=message.text)
+    if crud_functions.is_included(message.text):
+        await message.answer("Пользователь существует, введите другое имя:")
+
+    await message.answer("Введите свой email:")
+    await RegistrationState.email.set()
 
 @dp.message_handler(text=['Купить'])
 async def get_buying_list(message):
